@@ -3,6 +3,8 @@ from django.db import models
 from Users.models import Patient
 
 
+# static Questionnaire
+
 class Questionnaire(models.Model):
     
     questionnaireName =  models.CharField(max_length=45,default='')
@@ -11,15 +13,16 @@ class Questionnaire(models.Model):
     def __str__(self):
         return self.questionnaireName
 
-    
-    
+
+# ResponsesQuestionnaire 
+     
 class ResponsesQuestionnaire(models.Model):
     id_Patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True, blank=False)
     id_Questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, null=True, blank=False)
     dateOfResponse = models.DateTimeField(auto_now_add=True)
     score = models.DecimalField(max_digits=4,decimal_places=2,null=True, blank=False,default=0)
     
-    
+# Question   
 class Question(models.Model):
     QUESTIONTYPE = [
         ('Personal information','Personal information'),
@@ -33,6 +36,8 @@ class Question(models.Model):
         return self.questionText
     class Meta:
         ordering=['id']
+
+# الاختيارات
     
 class Option(models.Model):
     id_Question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, blank=False,related_name='Options')
@@ -41,7 +46,9 @@ class Option(models.Model):
 
     def __str__(self):
         return self.optionText
+# الجواب
     
+  
 class ResponsesQuestion(models.Model):
     id_Reponse_Questionnaire = models.ForeignKey(ResponsesQuestionnaire, on_delete=models.CASCADE, null=True, blank=False)
     id_Option = models.ForeignKey(Option, on_delete=models.CASCADE, null=True, blank=False)
